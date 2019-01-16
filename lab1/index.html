@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">    
+    <script type="text/javascript">
+      class MyCustomElement extends HTMLElement {
+	  connectedCallback() {
+	      alert('Hi from MyCustomElement');
+	  }
+      }
+
+      let customElementRegistry = window.customElements;
+      if (!customElementRegistry.get('my-custom-tag')) {
+	  customElementRegistry.define('my-custom-tag', MyCustomElement);
+      }
+    </script>    
+  </head>
+  <body>
+    <my-custom-tag></my-custom-tag>
+  </body>
+</html>
