@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">    
+    <script type="text/javascript">
+      class MyPhotoCarousel extends HTMLElement {
+	  connectedCallback() {
+	      this._photoIndex = 0;
+	      this._photos = this.getAttribute("photos").split(',');
+	      this.innerHTML = '<h2>' + this.getAttribute('title') + '</h2>' +
+		  '<h4>' + this.getAttribute('author') + '</h4>' +
+		  '<div class="image-container"></div>' +
+		  '<button class="back">&lt;</button>' +
+		  '<button class="forward">&gt;</button>';
+	      this.showPhoto();
+	      this.querySelector('button.back').addEventListener('click', event => this.onBackButtonClick(event));
+	      this.querySelector('button.forward').addEventListener('click', event => this.onForwardButtonClick(event));	      
+	  }
+
+	  showPhoto() {
+	      this.querySelector('.image-container').style.backgroundImage = 'url(' + this._photos[this._photoIndex] + ')';
+	  }
+
+	  onBackButtonClick(event) {
+	      this._photoIndex --;
+	      if (this._photoIndex < 0) {
+		  this._photoIndex = this._photos.length - 1;
+	      }
+	      this.showPhoto();
+	  }
+	  
+	  onForwardButtonClick(event) {
+	      this._photoIndex ++;
+	      if (this._photoIndex >= this._photos.length) {
+		  this._photoIndex = 0;
+	      }
+	      this.showPhoto();
+	  }
+	  
+      }
+
+      let customElementRegistry = window.customElements;
+      if (!customElementRegistry.get('my-photo-carousel')) {
+	  customElementRegistry.define('my-photo-carousel', MyPhotoCarousel);
+      }
+    </script>
+    <style>
+      my-photo-carousel {
+	  position: relative;
+	  width: 500px;
+	  height: 300px;
+	  display: flex;
+	  padding-top: 10px;
+	  flex-direction: column;
+	  border-color: black;
+	  border-width: 1px;
+	  border-style: solid;
+      }
+      my-photo-carousel h2, h4 {
+	  margin-bottom: 0;
+	  margin-top: 0;
+	  margin-left: 10px;
+      }
+      my-photo-carousel .image-container {
+	  margin-top: 15px;
+	  width: 100%;
+	  flex: 1;
+	  background-color: black;
+	  background-size: contain;
+	  background-repeat: no-repeat;
+	  background-position: 50%;
+      }
+      my-photo-carousel button {
+	  background: transparent;
+	  border: none;
+	  font-size: 48px;
+	  color: white;
+	  cursor: pointer;
+	  position: absolute;
+	  top: 50%;
+      }
+      my-photo-carousel button.back { left: 10px; }
+      my-photo-carousel button.forward { right: 10px; }
+    </style>
+  </head>
+  <body>
+    <my-photo-carousel title="Future Vacation Photos" author="Rafael Luque" photos="https://i.imgur.com/4aHeu3K.jpg,https://i.imgur.com/g1mYfZw.jpg"></my-photo-carousel>
+  </body>
+</html>
